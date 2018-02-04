@@ -119,8 +119,48 @@ def sundaresanKrishnaswamy(data):
     delay = 1.3 * t1 - 0.29 * t2
     plotResult(y1, y2, delay, tau, data)
 
+# Moltenkamp
+def moltenkamp(data):
+    y_r = data[-1, 1]
+    y1 = 0.15 * y_r
+    y2 = 0.45 * y_r
+    y3 = 0.75 * y_r
+
+    t1 = findTimeOnData(data, y1)
+    t2 = findTimeOnData(data, y2)
+    t3 = findTimeOnData(data, y3)
+
+    x = (t2 - t1)/(t3 - t1)
+    zeta = (0.0805 - (5.547 * ((0.475 - x) ^ 2))) / (x - 0.356)
+
+    f2 = 0
+    if (zeta < 1):
+        f2 = 0.708 * (2.811 ^ zeta)
+    else:
+        f2 = 2.6 * zeta - 0.6
+
+    w_n = f2 / (t3 - t1)
+
+    f3 = 0.922 * (1.66 ^ zeta)
+
+    delay = t2 - f3/w_n
+
+    tau1 = tau2 = 0
+
+    estimative = None
+
+    if (zeta >= 1):
+        tau1 = (zeta + numpy.sqrt((zeta^2) - 1))/w_n
+        tau2 = (zeta - numpy.sqrt((zeta^2) - 1))/w_n
+        
+    else:
+        beta = numpy.sqrt(1 - (zeta ^ 2))
+        phi = numpy.atan(zeta/beta)
+
+        estimative = 1 - (1 / beta) * numpy.exp(-zeta * w_n * data[:, 0]) * numpy.cos(w_n * beta * data[:, 0] - phi)
+
 # Invalid option
-def invalidOption(data)
+def invalidOption(data):
     print("Invalid option")
     main()
 
@@ -130,7 +170,8 @@ def switch(opt, data):
         1: zieglerNichols,
         2: hagglund,
         3: smith,
-        4: sundaresanKrishnaswamy
+        4: sundaresanKrishnaswamy,
+        5: moltenkamp
     }
     chosenMethod = switcher.get(opt, invalidOption)
     return chosenMethod(data)
@@ -139,7 +180,7 @@ def main():
     print "System identifier"
 
     print "Loading data"
-    data = numpy.loadtxt("values.data", skiprows=1)
+    data = numpy.loadtxt("values2.data", skiprows=1)
     print "Data loaded"
     
     print "Choose an Identification Method:"
