@@ -118,6 +118,11 @@ def sundaresanKrishnaswamy(data):
     delay = 1.3 * t1 - 0.29 * t2
     plotResult(y1, y2, delay, tau, data)
 
+# Invalid option
+def invalidOption(data):
+    print("Invalid option")
+    main()
+
 # Switch options
 def switch(opt, data):
     switcher = {
@@ -126,7 +131,7 @@ def switch(opt, data):
         3: smith,
         4: sundaresanKrishnaswamy
     }
-    chosenMethod = switcher.get(opt, lambda: "Argumento inválido")
+    chosenMethod = switcher.get(opt, invalidOption)
     return chosenMethod(data)
 
 def main():
