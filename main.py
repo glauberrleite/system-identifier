@@ -122,13 +122,13 @@ if opt >= 1 and opt <= 4:
     print "The Transfer Function is: "
     print str(K_p) + " * e^(-" + str(delay) + " * s)"
     print "-------------------"
-    print str(tau) + " * s + 1)"
+    print "(" +str(tau) + " * s + 1)"
 
     tf = r"$Kp * \frac{1}{Ts + 1} * e^{-delays}$"
 
     estimative = (1 - numpy.exp(-(data[:,0] - delay)/tau)) * K_p
 
-    pyplot.plot(data[:, 0], data[:, 1], 'b', estimative, 'r')
+    pyplot.plot(data[:, 0], data[:, 1], 'b', data[:, 0], estimative, 'r')
     pyplot.xlabel("Time (seconds)")
     pyplot.title("Comparison")
     pyplot.text(60, .025, tf)
