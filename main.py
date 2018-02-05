@@ -8,6 +8,7 @@ Created on Sun Feb  4 12:51:20 2018
 
 import numpy
 import matplotlib.pyplot as pyplot
+import matplotlib.patches as mpatches
 
 def findTimeOnData(data, y):
     "Given a numpy array of time and respective output, locates the times where y1 and y2 are reached"
@@ -63,6 +64,9 @@ def plotResult(data, delay, tau):
     pyplot.xlabel("Time (seconds)")
     pyplot.title("Comparison")
     pyplot.text(60, .025, tf)
+    legend = mpatches.Patch(color='red', label='Estimative')
+    legend2 = mpatches.Patch(color='blue', label='Data')
+    pyplot.legend(handles=[legend, legend2], loc=4)
     pyplot.show()
 
 # Ziegler-Nichols
