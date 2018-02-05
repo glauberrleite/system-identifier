@@ -47,8 +47,8 @@ def findTimeOnTangentLine(x0, y0, m, y):
     return t
 
 # Plot the result of the chosen method
-def plotResult(y1, y2, delay, tau, data):
-    K_p = y2 - y1
+def plotResult(data, delay, tau):
+    K_p = data[-1, 1] - data[0, 1]
 
     print "The Transfer Function is: "
     print str(K_p) + " * e^(-" + str(delay) + " * s)"
@@ -77,7 +77,7 @@ def zieglerNichols(data):
 
     delay = t1
     tau = t2 - t1
-    plotResult(y1,y2, delay, tau, data)
+    plotResult(data, delay, tau)
     
 # Hagglund
 def hagglund(data):
@@ -91,7 +91,7 @@ def hagglund(data):
 
     delay = t1
     tau = t2 - t1
-    plotResult(y1, y2, delay, tau, data)
+    plotResult(data, delay, tau)
     
 # Smith
 def smith(data):
@@ -104,7 +104,7 @@ def smith(data):
 
     tau = 1.5 * (t2 - t1)
     delay = 1.5 * t1 - 0.5 * t2
-    plotResult(y1, y2, delay, tau, data)
+    plotResult(data, delay, tau)
 
 # Sundaresan-Krishnaswamy
 def sundaresanKrishnaswamy(data):
@@ -117,7 +117,7 @@ def sundaresanKrishnaswamy(data):
 
     tau = 0.67 * (t2 - t1)
     delay = 1.3 * t1 - 0.29 * t2
-    plotResult(y1, y2, delay, tau, data)
+    plotResult(data, delay, tau)
 
 # Moltenkamp
 def moltenkamp(data):
@@ -180,7 +180,7 @@ def main():
     print "System identifier"
 
     print "Loading data"
-    data = numpy.loadtxt("values2.data", skiprows=1)
+    data = numpy.loadtxt("values.data", skiprows=0)
     print "Data loaded"
     
     print "Choose an Identification Method:"
