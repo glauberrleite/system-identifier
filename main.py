@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 # -*- coding: utf-8 -*-
 """
 Created on Sun Feb  4 12:51:20 2018
@@ -9,6 +11,7 @@ Created on Sun Feb  4 12:51:20 2018
 import numpy
 import matplotlib.pyplot as pyplot
 import matplotlib.patches as mpatches
+import sys, getopt
 
 def findTimeOnData(data, y):
     "Given a numpy array of time and respective output, locates the times where y1 and y2 are reached"
@@ -180,20 +183,39 @@ def switch(opt, data):
     chosenMethod = switcher.get(opt, invalidOption)
     return chosenMethod(data)
 
-def main():
-    print "System identifier"
-
-    print "Loading data"
-    data = numpy.loadtxt("values.data", skiprows=0)
-    print "Data loaded"
+def main(argv):
+    print("System identifier")
     
-    print "Choose an Identification Method:"
-    print "1 - Ziegler-Nichols"
-    print "2 - Hagglund"
-    print "3 - Smith"
-    print "4 - Sundaresan-Krishnaswamy"
+    # Treating arguments
+    dataFile = ""
+    skipRows = 0
+
+    if argv[0] != "":
+        dataFile = argv[0]
+
+    opts, args = getopt.getopt(argv, "hs:", ["skip-rows="])
+
+    for opt, arg in opts:
+        if opt == "-h":
+            print("main.py <dataFile> --skip-rows=<skip-rows>")
+            sys.exit(2)
+        elif opt in ("-s", "--skip-rows"):
+            skipRows = int(arg)
+
+
+    # Loading data
+    print("Loading data")
+    data = numpy.loadtxt(dataFile, skiprows=skipRows)
+    print("Data loaded")
+    
+    # Menu
+    print("Choose an Identification Method:")
+    print("1 - Ziegler-Nichols")
+    print("2 - Hagglund")
+    print("3 - Smith")
+    print("4 - Sundaresan-Krishnaswamy")
     opt = input("Method: ")
     switch(opt, data)
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
