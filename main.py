@@ -34,15 +34,17 @@ def findInflectionPoint(data):
     m = 0
     x0 = data[0, 0]
     y0 = data[0, 1]
+    y_min = data[-1,1]/3
 
     for i in range(len(data)):
         delta = abs((data[i, 1] - data[i + 1, 1]) / (data[i, 0] - data[i + 1, 0]))
-        if delta < m:
+        if delta < m and data[i, 1] > y_min:
             x0 = data[i, 0]
             y0 = data[i, 1]
             break
         m = delta
-    
+   
+    print("Inflection: [" + str(x0) + ", " + str(y0) + "]")
     return [x0, y0, m]
 
 def findTimeOnTangentLine(x0, y0, m, y):
@@ -59,14 +61,20 @@ def plotResult(data, delay, tau):
     print "-------------------"
     print "(" +str(tau) + " * s + 1)"
 
-    tf = r"$Kp * \frac{1}{Ts + 1} * e^{-delays}$"
+    tf = r"$"+ "{:.2f}".format(K_p)  +" * \frac{1}{"+ "{:.2f}".format(tau)  +"s + 1} * e^{-"+ "{:.2f}".format(delay) +"s}$"
+    
+    estimative = numpy.zeros(len(data[:,0]))
 
-    estimative = (1 - numpy.exp(-(data[:,0] - delay)/tau)) * K_p
+    for i in range(len(data[:,0])):
+        if data[i, 0] <= delay:
+            estimative[i] = 0
+        else:
+            estimative[i] = (1 - numpy.exp(-(data[i, 0] - delay)/tau)) * K_p
     
     pyplot.plot(data[:, 0], data[:, 1], 'b', data[:, 0], estimative, 'r')
     pyplot.xlabel("Time (seconds)")
     pyplot.title("Comparison")
-    pyplot.text(60, .025, tf)
+    pyplot.text(1, .025, tf)
     legend = mpatches.Patch(color='red', label='Estimative')
     legend2 = mpatches.Patch(color='blue', label='Data')
     pyplot.legend(handles=[legend, legend2], loc=4)
@@ -77,7 +85,7 @@ def zieglerNichols(data):
     y_r = data[-1, 1]
     [x0, y0, m] = findInflectionPoint(data)    
 
-    y1 = 0
+    y1 = data[0, 1]
     y2 = y_r
     t1 = findTimeOnTangentLine(x0, y0, m, y1)
     t2 = findTimeOnTangentLine(x0, y0, m, y2)
@@ -126,8 +134,8 @@ def sundaresanKrishnaswamy(data):
     delay = 1.3 * t1 - 0.29 * t2
     plotResult(data, delay, tau)
 
-# Moltenkamp
-def moltenkamp(data):
+# Mollenkamp
+def mollenkamp(data):
     y_r = data[-1, 1]
     y1 = 0.15 * y_r
     y2 = 0.45 * y_r
@@ -138,17 +146,17 @@ def moltenkamp(data):
     t3 = findTimeOnData(data, y3)
 
     x = (t2 - t1)/(t3 - t1)
-    zeta = (0.0805 - (5.547 * ((0.475 - x) ^ 2))) / (x - 0.356)
+    zeta = (0.0805 - (5.547 * ((0.475 - x) ** 2))) / (x - 0.356)
 
     f2 = 0
     if (zeta < 1):
-        f2 = 0.708 * (2.811 ^ zeta)
+        f2 = 0.708 * (2.811 ** zeta)
     else:
         f2 = 2.6 * zeta - 0.6
 
     w_n = f2 / (t3 - t1)
 
-    f3 = 0.922 * (1.66 ^ zeta)
+    f3 = 0.922 * (1.66 ** zeta)
 
     delay = t2 - f3/w_n
 
@@ -157,14 +165,16 @@ def moltenkamp(data):
     estimative = None
 
     if (zeta >= 1):
-        tau1 = (zeta + numpy.sqrt((zeta^2) - 1))/w_n
-        tau2 = (zeta - numpy.sqrt((zeta^2) - 1))/w_n
+        tau1 = (zeta + numpy.sqrt((zeta**2) - 1))/w_n
+        tau2 = (zeta - numpy.sqrt((zeta**2) - 1))/w_n
         
-    else:
-        beta = numpy.sqrt(1 - (zeta ^ 2))
-        phi = numpy.atan(zeta/beta)
+    beta = numpy.sqrt(1 - (zeta ** 2))
+    phi = numpy.arctan(zeta/beta)
 
-        estimative = 1 - (1 / beta) * numpy.exp(-zeta * w_n * data[:, 0]) * numpy.cos(w_n * beta * data[:, 0] - phi)
+    estimative = 1 - (1 / beta) * numpy.exp(-zeta * w_n * data[:, 0]) * numpy.cos(w_n * beta * data[:, 0] - phi)
+
+    pyplot.plot(data[:,0], data[:,1], 'b', data[:,1], estimative, 'r')
+    pyplot.show()
 
 # Invalid option
 def invalidOption(data):
@@ -178,7 +188,7 @@ def switch(opt, data):
         2: hagglund,
         3: smith,
         4: sundaresanKrishnaswamy,
-        5: moltenkamp
+        5: mollenkamp
     }
     chosenMethod = switcher.get(opt, invalidOption)
     return chosenMethod(data)
@@ -199,12 +209,12 @@ def main(argv):
         dataFile = argv[0]
         argv.pop(0)
 
-    opts, args = getopt.getopt(argv, "hs:", ["skip-rows=", "curve-fitting=", "version"])
+    opts, args = getopt.getopt(argv, "hs:", ["skip-rows=", "curve-fitting=", "version", "meanfit"])
 
     for opt, arg in opts:
         if opt == "-h":
             print("Usage:")
-            print("main.py <dataFile> --skip-rows=<skip-rows> --curve-fitting=<degree>")
+            print("main.py <dataFile> --skip-rows=<skip-rows> --curve-fitting=<degree> --mean-fit")
             print("main.py -h")
             print("main.py --version")
             sys.exit(0)
@@ -216,6 +226,8 @@ def main(argv):
         elif opt == "--version":
             print("System Identifier v" + str(version))
             sys.exit(0)
+        elif opt == "--mean-fit":
+            meanFit = True
 
     # Loading data
     print("Loading data")
@@ -230,6 +242,10 @@ def main(argv):
 
         for i in range(len(data[:, 1])):
             data[i, 1] = pol(data[i, 0])
+
+    # Applying mean fitting
+    #if meanFit:
+        
     
     # Menu
     print("-------------------")
@@ -238,6 +254,7 @@ def main(argv):
     print("2 - Hagglund")
     print("3 - Smith")
     print("4 - Sundaresan-Krishnaswamy")
+    print("5 - Mollenkamp")
     opt = input("Method: ")
     switch(opt, data)
 
