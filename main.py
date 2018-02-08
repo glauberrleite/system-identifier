@@ -207,7 +207,7 @@ def main(argv):
             print("main.py <dataFile> --skip-rows=<skip-rows> --curve-fitting=<degree>")
             print("main.py -h")
             print("main.py --version")
-            sys.exit(2)
+            sys.exit(0)
         elif opt in ("-s", "--skip-rows"):
             skipRows = int(arg)
         elif opt == "--curve-fitting":
@@ -215,6 +215,7 @@ def main(argv):
             fitDegree = int(arg)
         elif opt == "--version":
             print("System Identifier v" + str(version))
+            sys.exit(0)
 
     # Loading data
     print("Loading data")
