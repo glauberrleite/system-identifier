@@ -184,31 +184,54 @@ def switch(opt, data):
     return chosenMethod(data)
 
 def main(argv):
+    print("-------------------")
     print("System identifier")
-    
+    print("-------------------")
+   
+    version = 1.0
     # Treating arguments
     dataFile = ""
     skipRows = 0
-
-    if argv[0] != "":
+    fitting = False
+    fitDegree = 2
+    
+    if (argv[0] in ["-h", "--version"]) == False:
         dataFile = argv[0]
+        argv.pop(0)
 
-    opts, args = getopt.getopt(argv, "hs:", ["skip-rows="])
+    opts, args = getopt.getopt(argv, "hs:", ["skip-rows=", "curve-fitting=", "version"])
 
     for opt, arg in opts:
         if opt == "-h":
-            print("main.py <dataFile> --skip-rows=<skip-rows>")
+            print("Usage:")
+            print("main.py <dataFile> --skip-rows=<skip-rows> --curve-fitting=<degree>")
+            print("main.py -h")
+            print("main.py --version")
             sys.exit(2)
         elif opt in ("-s", "--skip-rows"):
             skipRows = int(arg)
-
+        elif opt == "--curve-fitting":
+            fitting = True
+            fitDegree = int(arg)
+        elif opt == "--version":
+            print("System Identifier v" + str(version))
 
     # Loading data
     print("Loading data")
     data = numpy.loadtxt(dataFile, skiprows=skipRows)
     print("Data loaded")
+
+    # Applying curve fitting if it's set
+    if fitting:
+        print("Using " + str(fitDegree) + " degrees curve fitting")
+        coefficients = numpy.polyfit(data[:, 0], data[:, 1], fitDegree)
+        pol = numpy.poly1d(coefficients)
+
+        for i in range(len(data[:, 1])):
+            data[i, 1] = pol(data[i, 0])
     
     # Menu
+    print("-------------------")
     print("Choose an Identification Method:")
     print("1 - Ziegler-Nichols")
     print("2 - Hagglund")
