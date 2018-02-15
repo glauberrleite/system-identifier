@@ -23,10 +23,10 @@ class FirstOrderMethod:
 
 
     def showTransferFunction(self):
-        print "The Transfer Function is: "
-        print str(K_p) + " * e^(-" + str(delay) + " * s)"
-        print "-------------------"
-        print "(" + str(tau) + " * s + 1)"
+        print("The Transfer Function is: ")
+        print(str(K_p) + " * e^(-" + str(delay) + " * s)")
+        print("-------------------")
+        print("(" + str(tau) + " * s + 1)")
 
     
     def plot(self):
