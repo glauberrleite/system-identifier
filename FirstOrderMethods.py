@@ -13,6 +13,9 @@ class FirstOrderMethod:
         self.estimative = numpy.zeros(len(self.data[:, 0]))
         self.delay = 0
         self.tau = 0
+        self.x_0 = 0
+        self.y_0 = 0
+        self.m = 0
 
     def _estimate(self):
         for i in range(len(self.data[:,0])):
@@ -30,7 +33,9 @@ class FirstOrderMethod:
 
     
     def plot(self):
-        pyplot.plot(self.data[:, 0], self.data[:, 1], 'b', self.data[:, 0], self.estimative, 'r')
+        
+        plt = numpy.linspace(self.x_0-1, self.x_0+1)
+        pyplot.plot(self.data[:, 0], self.data[:, 1], 'b', self.data[:, 0], self.estimative, 'r', plt, 'g')
         pyplot.xlabel("Time (seconds)")
         pyplot.title("Comparison")
         legend = mpatches.Patch(color='red', label='Estimative')
@@ -43,18 +48,21 @@ class ZieglerNichols(FirstOrderMethod):
     def __init__(self, data):
         FirstOrderMethod.__init__(self, data)
 
-        [x_0, y_0, m] = Util.findInflectionPoint(self.data)
+        [self.x_0, self.y_0, self.m] = Util.findInflectionPoint(self.data)
 
         y_1 = self.data[0, 1]
         y_2 = self.y_r
 
-        t_1 = Util.findTimeOnTangentLine(x_0, y_0, m, y_1)
-        t_2 = Util.findTimeOnTangentLine(x_0, y_0, m, y_2)
+        t_1 = Util.findTimeOnTangentLine(self.x_0, self.y_0, self.m, y_1)
+        t_2 = Util.findTimeOnTangentLine(self.x_0, self.y_0, self.m, y_2)
 
         self.delay = t_1
         self.tau = t_2 - t_1
 
         self._estimate()
+        
+    def plot(self):
+        FirstOrderMethod.plot(self)
 
 class Hagglund(FirstOrderMethod):
     def __init__(self, data):
