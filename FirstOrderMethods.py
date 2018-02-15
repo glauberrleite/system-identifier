@@ -83,8 +83,8 @@ class Smith(FirstOrderMethod):
         t_1 = Util.findTimeOnData(self.data, y_1)
         t_2 = Util.findTimeOnData(self.data, y_2)
 
-        self.delay = 1.5 * (t_2 - t_1)
-        self.tau = 1.5 * t_1 - 0.5 * t_2
+        self.tau = 1.5 * (t_2 - t_1)
+        self.delay = 1.5 * t_1 - 0.5 * t_2
 
         self._estimate()
 
@@ -98,7 +98,7 @@ class SundaresanKrishnaswamy(FirstOrderMethod):
         t_1 = Util.findTimeOnData(self.data, y_1)
         t_2 = Util.findTimeOnData(self.data, y_2)
 
-        self.delay = 0.67 * (t_2 - t_1)
-        self.tau = 1.3 * t_1 - 0.29 * t_2
+        self.tau = 0.67 * (t_2 - t_1)
+        self.delay = 1.3 * t_1 - 0.29 * t_2
 
         self._estimate()
