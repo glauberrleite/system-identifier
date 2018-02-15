@@ -17,22 +17,22 @@ import sys, getopt
 # Ziegler-Nichols
 def zieglerNichols(data):
     method = ZieglerNichols(data)
-    method.plot()
+    return method
 
 # Hagglund
 def hagglund(data):
     method = Hagglund(data)
-    method.plot()
+    return method
 
 # Smith
 def smith(data):
     method = Smith(data)
-    method.plot()
+    return method
 
 # Sundaresan-Krishnaswamy
 def sundaresanKrishnaswamy(data):
     method = SundaresanKrishnaswamy(data)
-    method.plot()
+    return method
 
 # Mollenkamp
 def mollenkamp(data):
@@ -82,7 +82,7 @@ def invalidOption(data):
     main()
 
 # Switch options
-def switch(opt, data):
+def switch2(opt, data):
     switcher = {
         1: zieglerNichols,
         2: hagglund,
@@ -90,8 +90,10 @@ def switch(opt, data):
         4: sundaresanKrishnaswamy,
         5: mollenkamp
     }
-    chosenMethod = switcher.get(opt, invalidOption)
-    return chosenMethod(data)
+    chosenClass = switcher.get(opt, invalidOption)
+    method = chosenClass(data)    
+    return method
+    
 
 def main(argv):
     print("-------------------")
@@ -153,11 +155,15 @@ def main(argv):
     print("4 - Sundaresan-Krishnaswamy")
     print("5 - Mollenkamp")
     opt = input("Method: ")
-    switch(opt, data)
+    
+    method = None
+    method = switch2(opt, data)
+    method.plot()
+    
 
     # Printing performance measures
     #print("-------------------")
-    #print("IAE: " + str(Util.iae(data, method.estimative)))
+    print("IAE: " + str(Util.iae(data, method.estimative)))
     #print("ISE: " + str(Util.ise(data, method.estimative)))
     #print("ITAE: "+ str(Util.itae(data, method.estimative)))
 
