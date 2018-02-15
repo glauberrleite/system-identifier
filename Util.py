@@ -40,3 +40,39 @@ class Util:
         # Tangent line equation: (y - y0) = m * (x - x0)
         t = x0 + (y - y0) / m
         return t
+
+    @staticmethod
+    def iae(data, estimative):
+        result = 0
+
+        n = len(data[:, 0])
+        delta_t = (data[-1, 0] - data[0, 0])/n
+
+        for i in range(n)
+            result = result + abs(estimative[i] - data[i, 1]) * delta_t
+
+        return result
+
+    @staticmethod
+    def ise(data, estimative):
+        result = 0
+
+        n = len(data[:, 0])
+        delta_t = (data[-1, 0] - data[0, 0])/n
+
+        for i in range(n)
+            result = result + ((estimative[i] - data[i, 1])**2) * delta_t
+
+        return result
+
+    @staticmethod
+    def itae(data, estimative):
+        result = 0
+
+        n = len(data[:, 0])
+        delta_t = (data[-1, 0] - data[0, 0])/n
+
+        for i in range(n)
+            result = result + data[i, 0] * abs(estimative[i] - data[i, 1]) * delta_t
+
+        return result
