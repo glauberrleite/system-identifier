@@ -162,10 +162,11 @@ def main(argv):
     
 
     # Printing performance measures
-    #print("-------------------")
+    print("-------------------")
+    print("MSE: "+ str(Util.mse(data, method.estimative)))    
     print("IAE: " + str(Util.iae(data, method.estimative)))
-    #print("ISE: " + str(Util.ise(data, method.estimative)))
-    #print("ITAE: "+ str(Util.itae(data, method.estimative)))
+    print("ISE: " + str(Util.ise(data, method.estimative)))
+    print("ITAE: "+ str(Util.itae(data, method.estimative)))
 
 if __name__ == "__main__":
     main(sys.argv[1:])

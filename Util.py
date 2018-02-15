@@ -62,6 +62,17 @@ class Util:
             result = result + ((estimative[i] - data[i, 1])**2) 
 
         return result
+    
+    @staticmethod
+    def mse(data, estimative):
+        result = 0
+
+        n = len(data[:, 0])
+
+        for i in range(n):
+            result = result + ((estimative[i] - data[i, 1])**2) 
+
+        return result/n
 
     @staticmethod
     def itae(data, estimative):
