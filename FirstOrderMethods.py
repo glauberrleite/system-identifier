@@ -14,7 +14,7 @@ class FirstOrderMethod:
         self.delay = 0
         self.tau = 0
 
-    def estimate(self):
+    def _estimate(self):
         for i in range(len(self.data[:,0])):
             if self.data[i, 0] <= self.delay:
                 self.estimative[i] = 0
@@ -54,7 +54,7 @@ class ZieglerNichols(FirstOrderMethod):
         self.delay = t_1
         self.tau = t_2 - t_1
 
-        self.estimate()
+        self._estimate()
 
 class Hagglund(FirstOrderMethod):
     def __init__(self, data):
@@ -71,7 +71,7 @@ class Hagglund(FirstOrderMethod):
         self.delay = t_1
         self.tau = t_2 - t_1
 
-        self.estimate()
+        self._estimate()
 
 class Smith(FirstOrderMethod):
     def __init__(self, data):
@@ -86,7 +86,7 @@ class Smith(FirstOrderMethod):
         self.delay = 1.5 * (t_2 - t_1)
         self.tau = 1.5 * t_1 - 0.5 * t_2
 
-        self.estimate()
+        self._estimate()
 
 class SundaresanKrishnaswamy(FirstOrderMethod):
     def __init__(self, data):
@@ -101,4 +101,4 @@ class SundaresanKrishnaswamy(FirstOrderMethod):
         self.delay = 0.67 * (t_2 - t_1)
         self.tau = 1.3 * t_1 - 0.29 * t_2
 
-        self.estimate()
+        self._estimate()
