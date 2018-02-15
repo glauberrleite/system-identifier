@@ -48,7 +48,7 @@ class Util:
         n = len(data[:, 0])
         delta_t = (data[-1, 0] - data[0, 0])/n
 
-        for i in range(n)
+        for i in range(n):
             result = result + abs(estimative[i] - data[i, 1]) * delta_t
 
         return result
@@ -60,7 +60,7 @@ class Util:
         n = len(data[:, 0])
         delta_t = (data[-1, 0] - data[0, 0])/n
 
-        for i in range(n)
+        for i in range(n):
             result = result + ((estimative[i] - data[i, 1])**2) * delta_t
 
         return result
@@ -72,7 +72,7 @@ class Util:
         n = len(data[:, 0])
         delta_t = (data[-1, 0] - data[0, 0])/n
 
-        for i in range(n)
+        for i in range(n):
             result = result + data[i, 0] * abs(estimative[i] - data[i, 1]) * delta_t
 
         return result
