@@ -132,9 +132,12 @@ def main(argv):
     print("5 - Mollenkamp")
     opt = input("Method: ")
     
+    print("-------------------")
     method = None
     method = switch2(opt, data)
     
+    method.showTransferFunction()
+
     plot(data, method.estimative)
     
 

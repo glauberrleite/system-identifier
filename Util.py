@@ -32,7 +32,7 @@ class Util:
                 break
             m = delta
                                                                                                                                                                                            
-        print("Inflection: [" + str(x0) + ", " + str(y0) + "]")
+        print("Inflection detected at [" + str(x0) + ", " + str(y0) + "]")
         return [x0, y0, m]
 
     @staticmethod

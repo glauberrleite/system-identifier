@@ -26,9 +26,9 @@ class FirstOrderMethod:
 
     def showTransferFunction(self):
         print("The Transfer Function is: ")
-        print(str(K_p) + " * e^(-" + str(delay) + " * s)")
+        print(str(self.K_p) + " * e^(-" + str(self.delay) + " * s)")
         print("-------------------")
-        print("(" + str(tau) + " * s + 1)")
+        print("(" + str(self.tau) + " * s + 1)")
 
     
 class ZieglerNichols(FirstOrderMethod):

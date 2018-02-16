@@ -21,10 +21,15 @@ class SecondOrderMethod:
             tau2 = (self.zeta - numpy.sqrt((self.zeta**2) - 1))/self.w_n
             print("zeta >= 1")
 
+    def showTransferFunction(self):
+        print("The Transfer Function is:")
+        print("(" + str(self.w_n) + "^2) * e^(-"+ str(self.delay)  +"s)")
+        print("-----------------------")
+        print("s^2 + 2 * "+ str(self.zeta) +" * " + str(self.w_n) + " * s + " + str(self.w_n) + "^2")
+
 
 class Mollenkamp(SecondOrderMethod):
-    def __init__(self, data):
-        
+    def __init__(self, data):        
         SecondOrderMethod.__init__(self, data) 
 
         y_1 = 0.15 * self.y_r
@@ -34,6 +39,10 @@ class Mollenkamp(SecondOrderMethod):
         t_1 = Util.findTimeOnData(data, y_1)
         t_2 = Util.findTimeOnData(data, y_2)
         t_3 = Util.findTimeOnData(data, y_3)
+
+        print("t1 = " + str(t_1))
+        print("t2 = " + str(t_2))
+        print("t3 = " + str(t_3))
 
         x = (t_2 - t_1)/(t_3 - t_1)
 
