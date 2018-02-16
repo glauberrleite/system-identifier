@@ -1,6 +1,5 @@
 import numpy
 import matplotlib.pyplot as pyplot
-import matplotlib.patches as mpatches
 from Util import Util
 
 class FirstOrderMethod:
@@ -32,37 +31,29 @@ class FirstOrderMethod:
         print("(" + str(tau) + " * s + 1)")
 
     
-    def plot(self):
-        
-        plt = numpy.linspace(self.x_0-1, self.x_0+1)
-        pyplot.plot(self.data[:, 0], self.data[:, 1], 'b', self.data[:, 0], self.estimative, 'r', plt, 'g')
-        pyplot.xlabel("Time (seconds)")
-        pyplot.title("Comparison")
-        legend = mpatches.Patch(color='red', label='Estimative')
-        legend2 = mpatches.Patch(color='blue', label='Data')
-        pyplot.legend(handles=[legend, legend2], loc=4)
-        pyplot.show()
-
-
 class ZieglerNichols(FirstOrderMethod):
     def __init__(self, data):
         FirstOrderMethod.__init__(self, data)
 
-        [self.x_0, self.y_0, self.m] = Util.findInflectionPoint(self.data)
+        [x_0, y_0, m] = Util.findInflectionPoint(self.data)
 
         y_1 = self.data[0, 1]
         y_2 = self.y_r
 
-        t_1 = Util.findTimeOnTangentLine(self.x_0, self.y_0, self.m, y_1)
-        t_2 = Util.findTimeOnTangentLine(self.x_0, self.y_0, self.m, y_2)
+        t_1 = Util.findTimeOnTangentLine(x_0, y_0, m, y_1)
+        t_2 = Util.findTimeOnTangentLine(x_0, y_0, m, y_2)
 
         self.delay = t_1
         self.tau = t_2 - t_1
 
         self._estimate()
         
-    def plot(self):
-        FirstOrderMethod.plot(self)
+        # Tangent line plot
+        delta = 10 * (self.data[-1, 0] - self.data[0, 0])/len(data[:, 0])
+        x = numpy.linspace(x_0 - delta, x_0 + delta)
+        y = m * (x - x_0) + y_0
+
+        pyplot.plot(x, y, 'g--')
 
 class Hagglund(FirstOrderMethod):
     def __init__(self, data):
@@ -80,6 +71,13 @@ class Hagglund(FirstOrderMethod):
         self.tau = t_2 - t_1
 
         self._estimate()
+
+        # Tangent line plot
+        delta = 10 * (self.data[-1, 0] - self.data[0, 0])/len(data[:, 0])
+        x = numpy.linspace(x_0 - delta, x_0 + delta)
+        y = m * (x - x_0) + y_0
+
+        pyplot.plot(x, y, 'g--')
 
 class Smith(FirstOrderMethod):
     def __init__(self, data):

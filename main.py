@@ -9,10 +9,23 @@ Created on Sun Feb  4 12:51:20 2018
 """
 
 from FirstOrderMethods import *
+from SecondOrderMethods import *
 
 import numpy
 import matplotlib.pyplot as pyplot
+import matplotlib.patches as mpatches
 import sys, getopt
+
+def plot(data, estimative):
+    pyplot.plot(data[:, 0], data[:, 1], 'b')
+    pyplot.plot(data[:, 0], estimative, 'r')
+    pyplot.xlabel("Time (seconds)")
+    pyplot.title("Comparison")
+    legend = mpatches.Patch(color='red', label='Estimative')
+    legend2 = mpatches.Patch(color='blue', label='Data')
+    pyplot.legend(handles=[legend, legend2], loc=4)
+    pyplot.show()
+
 
 # Ziegler-Nichols
 def zieglerNichols(data):
@@ -36,45 +49,8 @@ def sundaresanKrishnaswamy(data):
 
 # Mollenkamp
 def mollenkamp(data):
-    y_r = data[-1, 1]
-    y1 = 0.15 * y_r
-    y2 = 0.45 * y_r
-    y3 = 0.75 * y_r
-
-    t1 = findTimeOnData(data, y1)
-    t2 = findTimeOnData(data, y2)
-    t3 = findTimeOnData(data, y3)
-
-    x = (t2 - t1)/(t3 - t1)
-    zeta = (0.0805 - (5.547 * ((0.475 - x) ** 2))) / (x - 0.356)
-
-    f2 = 0
-    if (zeta < 1):
-        f2 = 0.708 * (2.811 ** zeta)
-    else:
-        f2 = 2.6 * zeta - 0.6
-
-    w_n = f2 / (t3 - t1)
-
-    f3 = 0.922 * (1.66 ** zeta)
-
-    delay = t2 - f3/w_n
-
-    tau1 = tau2 = 0
-
-    estimative = None
-
-    if (zeta >= 1):
-        tau1 = (zeta + numpy.sqrt((zeta**2) - 1))/w_n
-        tau2 = (zeta - numpy.sqrt((zeta**2) - 1))/w_n
-        
-    beta = numpy.sqrt(1 - (zeta ** 2))
-    phi = numpy.arctan(zeta/beta)
-
-    estimative = 1 - (1 / beta) * numpy.exp(-zeta * w_n * data[:, 0]) * numpy.cos(w_n * beta * data[:, 0] - phi)
-
-    pyplot.plot(data[:,0], data[:,1], 'b', data[:,1], estimative, 'r')
-    pyplot.show()
+    method = Mollenkamp(data)
+    return method
 
 # Invalid option
 def invalidOption(data):
@@ -158,7 +134,8 @@ def main(argv):
     
     method = None
     method = switch2(opt, data)
-    method.plot()
+    
+    plot(data, method.estimative)
     
 
     # Printing performance measures
