@@ -166,16 +166,16 @@ def main(argv):
     method = None
     method = switch2(opt, data)
     
+    print("-------------------")
     method.showTransferFunction()
-
-    plot(data, method.estimative)
-    
 
     # Calculating and printing performance measures
     mse = Util.mse(data, method.estimative)
     iae = Util.iae(data, method.estimative)
     ise = Util.ise(data, method.estimative)
     itae = Util.itae(data, method.estimative)
+    print("-------------------")
+    print("Performance Measures")
     print("-------------------")
     print("MSE: "+ str(Util.mse(data, method.estimative)))    
     print("IAE: " + str(Util.iae(data, method.estimative)))
@@ -185,14 +185,14 @@ def main(argv):
     if saveEstimative:
         numpy.savetxt(estimativeFile, method.estimative)
 
-    if performanceFile:
+    if savePerformance:
         with open(performanceFile, "w") as eFile: 
             eFile.write("MSE: " + str(mse) + "\n")
             eFile.write("IAE: " + str(iae) + "\n")
             eFile.write("ISE: " + str(ise) + "\n")
             eFile.write("ITAE: " + str(itae) + "\n")
 
-
+    plot(data, method.estimative)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
