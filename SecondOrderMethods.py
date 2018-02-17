@@ -6,27 +6,43 @@ class SecondOrderMethod:
         # Preallocation
         self.data = data
         self.y_r = data[-1, 1]
-        self.estimative = numpy.zeros(len(self.data[:, 0]))
+        self.estimative = numpy.zeros(len(self.data))
         self.zeta = 0
         self.w_n = 0
         self.delay = 0
+        self.tau1 = 0
+        self.tau2 = 0
+        self.k = data[-1, 1] - data[0, 1]
 
     def _estimate(self):
-        if self.zeta < 1:
-            beta = numpy.sqrt(1 - (self.zeta ** 2))
-            phi = numpy.arctan(self.zeta/beta)
-            estimative = 1 - (1 / beta) * numpy.exp(-self.zeta * self.w_n * self.data[:, 0]) * numpy.cos(self.w_n * beta * self.data[:, 0] - phi)
-        else:
-            tau1 = (self.zeta + numpy.sqrt((self.zeta**2) - 1))/self.w_n
-            tau2 = (self.zeta - numpy.sqrt((self.zeta**2) - 1))/self.w_n
-            print("zeta >= 1")
+        for i in range(len(self.data)):
+            if self.data[i, 0] <= self.delay:
+                self.estimative[i] = 0
+            elif self.zeta < 1:
+                beta = numpy.sqrt(1 - (self.zeta ** 2))
+                phi = numpy.arctan(self.zeta/beta)
+                self.estimative[i] = self.k * (1 - (1 / beta) * numpy.exp(-self.zeta * self.w_n * self.data[i, 0]) * numpy.cos(self.w_n * beta * self.data[i, 0] - phi))
+            else:
+                self.tau1 = (self.zeta + numpy.sqrt((self.zeta**2) - 1))/self.w_n
+                self.tau2 = (self.zeta - numpy.sqrt((self.zeta**2) - 1))/self.w_n
+                self.estimative[i] = (self.k/(self.tau1 * self.tau2)) \
+                        * ((self.tau1*self.tau2) \
+                        + ( ( (self.tau1**2)*(self.tau2) ) / (self.tau2 - self.tau1) ) * numpy.exp(-(self.data[i, 0] - self.delay)/self.tau1)  \
+                        + ( ( (self.tau1)*(self.tau2**2) ) / (self.tau1 - self.tau2) ) * numpy.exp(-(self.data[i, 0] - self.delay)/self.tau2))
+
 
     def showTransferFunction(self):
         print("The Transfer Function is:")
-        print("(" + str(self.w_n) + "^2) * e^(-"+ str(self.delay)  +"s)")
-        print("-----------------------")
-        print("s^2 + 2 * "+ str(self.zeta) +" * " + str(self.w_n) + " * s + " + str(self.w_n) + "^2")
+        if self.zeta < 1:
+            print(str(self.k) + " * (" + str(self.w_n) + "^2) * e^(-"+ str(self.delay)  +"s)")
+            print("-----------------------")
+            print("s^2 + 2 * "+ str(self.zeta) +" * " + str(self.w_n) + " * s + " + str(self.w_n) + "^2")
+        else:
+            print(str(self.k) + " * e^(-"+ str(self.delay) + "s)")
+            print("(" + str(self.tau1) + "s + 1) * (" + str(self.tau2) + "s + 1)")
 
+    def plot(self):
+        pass
 
 class Mollenkamp(SecondOrderMethod):
     def __init__(self, data):        

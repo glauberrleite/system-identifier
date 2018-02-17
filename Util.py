@@ -45,7 +45,7 @@ class Util:
     def iae(data, estimative):
         result = 0
 
-        n = len(data[:, 0])
+        n = len(data)
 
         for i in range(n):
             result = result + abs(estimative[i] - data[i, 1])
@@ -56,7 +56,7 @@ class Util:
     def ise(data, estimative):
         result = 0
 
-        n = len(data[:, 0])
+        n = len(data)
 
         for i in range(n):
             result = result + ((estimative[i] - data[i, 1])**2) 
@@ -67,7 +67,7 @@ class Util:
     def mse(data, estimative):
         result = 0
 
-        n = len(data[:, 0])
+        n = len(data)
 
         for i in range(n):
             result = result + ((estimative[i] - data[i, 1])**2) 
@@ -78,7 +78,7 @@ class Util:
     def itae(data, estimative):
         result = 0
 
-        n = len(data[:, 0])
+        n = len(data)
 
         for i in range(n):
             result = result + data[i, 0] * abs(estimative[i] - data[i, 1]) 

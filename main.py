@@ -82,17 +82,19 @@ def main(argv):
     skipRows = 0
     fitting = False
     fitDegree = 2
+    medianFitting = False
+    medianFittingStep = 3
     
     if (argv[0] in ["-h", "--version"]) == False:
         dataFile = argv[0]
         argv.pop(0)
 
-    opts, args = getopt.getopt(argv, "hs:", ["skip-rows=", "curve-fitting=", "version", "meanfit"])
+    opts, args = getopt.getopt(argv, "hs:", ["skip-rows=", "curve-fitting=", "version", "median-fitting="])
 
     for opt, arg in opts:
         if opt == "-h":
             print("Usage:")
-            print("main.py <dataFile> --skip-rows=<skip-rows> --curve-fitting=<degree> --mean-fit")
+            print("main.py <dataFile> --skip-rows=<skip-rows> --curve-fitting=<degree> --median-fitting=<step-size>")
             print("main.py -h")
             print("main.py --version")
             sys.exit(0)
@@ -104,8 +106,9 @@ def main(argv):
         elif opt == "--version":
             print("System Identifier v" + str(version))
             sys.exit(0)
-        elif opt == "--mean-fit":
-            meanFit = True
+        elif opt == "--median-fitting":
+            medianFitting = True
+            medianFittingStep = int(arg) 
 
     # Loading data
     print("Loading data")
@@ -118,8 +121,24 @@ def main(argv):
         coefficients = numpy.polyfit(data[:, 0], data[:, 1], fitDegree)
         pol = numpy.poly1d(coefficients)
 
-        for i in range(len(data[:, 1])):
+        for i in range(len(data)):
             data[i, 1] = pol(data[i, 0])
+
+    # Applying median fitting
+    if medianFitting:
+        print("Using median fitting with " + str(medianFittingStep) + " step size")
+        newData = numpy.zeros((len(data)/medianFittingStep, 2))
+
+        aux = numpy.zeros((medianFittingStep, 2))
+
+        for i in range(len(data)):
+                aux[i % medianFittingStep] = data[i]
+                if (i % medianFittingStep) == medianFittingStep - 1:
+                    index = i/medianFittingStep
+                    newData[index, 0] = numpy.median(aux[:, 0])
+                    newData[index, 1] = numpy.median(aux[:, 1])
+
+        data = newData
 
     
     # Menu

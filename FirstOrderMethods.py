@@ -9,7 +9,7 @@ class FirstOrderMethod:
         # Preallocating common parameters
         self.K_p = data[-1, 1] - data[0, 1]
         self.y_r = data[-1, 1]
-        self.estimative = numpy.zeros(len(self.data[:, 0]))
+        self.estimative = numpy.zeros(len(self.data))
         self.delay = 0
         self.tau = 0
         self.x_0 = 0
@@ -17,7 +17,7 @@ class FirstOrderMethod:
         self.m = 0
 
     def _estimate(self):
-        for i in range(len(self.data[:,0])):
+        for i in range(len(self.data)):
             if self.data[i, 0] <= self.delay:
                 self.estimative[i] = 0
             else:
@@ -49,7 +49,7 @@ class ZieglerNichols(FirstOrderMethod):
         self._estimate()
         
         # Tangent line plot
-        delta = 10 * (self.data[-1, 0] - self.data[0, 0])/len(data[:, 0])
+        delta = 10 * (self.data[-1, 0] - self.data[0, 0])/len(data)
         x = numpy.linspace(x_0 - delta, x_0 + delta)
         y = m * (x - x_0) + y_0
 
@@ -73,7 +73,7 @@ class Hagglund(FirstOrderMethod):
         self._estimate()
 
         # Tangent line plot
-        delta = 10 * (self.data[-1, 0] - self.data[0, 0])/len(data[:, 0])
+        delta = 10 * (self.data[-1, 0] - self.data[0, 0])/len(data)
         x = numpy.linspace(x_0 - delta, x_0 + delta)
         y = m * (x - x_0) + y_0
 
