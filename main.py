@@ -84,17 +84,21 @@ def main(argv):
     fitDegree = 2
     medianFitting = False
     medianFittingStep = 3
+    saveEstimative = False
+    estimativeFile = "outputEstimative.txt"
+    savePerformance = False
+    performanceFile = "outputPerformance.txt"
     
     if (argv[0] in ["-h", "--version"]) == False:
         dataFile = argv[0]
         argv.pop(0)
 
-    opts, args = getopt.getopt(argv, "hs:", ["skip-rows=", "curve-fitting=", "version", "median-fitting="])
+    opts, args = getopt.getopt(argv, "hs:", ["skip-rows=", "curve-fitting=", "version", "median-fitting=", "save-estimative=", "save-performance="])
 
     for opt, arg in opts:
         if opt == "-h":
             print("Usage:")
-            print("main.py <dataFile> --skip-rows=<skip-rows> --curve-fitting=<degree> --median-fitting=<step-size>")
+            print("main.py <dataFile> --skip-rows=<skip-rows> --curve-fitting=<degree> --median-fitting=<step-size> --save-estimative=<filename> --save-performance=<filename>")
             print("main.py -h")
             print("main.py --version")
             sys.exit(0)
@@ -109,6 +113,13 @@ def main(argv):
         elif opt == "--median-fitting":
             medianFitting = True
             medianFittingStep = int(arg) 
+        elif opt == "--save-estimative":
+            saveEstimative = True
+            estimativeFile = arg
+        elif opt == "--save-performance":
+            savePerformance = True
+            performanceFile = arg
+
 
     # Loading data
     print("Loading data")
@@ -160,12 +171,28 @@ def main(argv):
     plot(data, method.estimative)
     
 
-    # Printing performance measures
+    # Calculating and printing performance measures
+    mse = Util.mse(data, method.estimative)
+    iae = Util.iae(data, method.estimative)
+    ise = Util.ise(data, method.estimative)
+    itae = Util.itae(data, method.estimative)
     print("-------------------")
     print("MSE: "+ str(Util.mse(data, method.estimative)))    
     print("IAE: " + str(Util.iae(data, method.estimative)))
     print("ISE: " + str(Util.ise(data, method.estimative)))
     print("ITAE: "+ str(Util.itae(data, method.estimative)))
+
+    if saveEstimative:
+        numpy.savetxt(estimativeFile, method.estimative)
+
+    if performanceFile:
+        with open(performanceFile, "w") as eFile: 
+            eFile.write("MSE: " + str(mse) + "\n")
+            eFile.write("IAE: " + str(iae) + "\n")
+            eFile.write("ISE: " + str(ise) + "\n")
+            eFile.write("ITAE: " + str(itae) + "\n")
+
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])
