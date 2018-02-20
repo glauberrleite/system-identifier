@@ -78,3 +78,24 @@ class Mollenkamp(SecondOrderMethod):
 
         self._estimate()
 
+class Smith2(SecondOrderMethod):
+    def __init__(self, data):
+        SecondOrderMethod.__init__(self, data)
+
+        y_1 = 0.2 * self.y_r
+        y_2 = 0.6 * self.y_r
+
+        t_1 = Util.findTimeOnData(data, y_1)
+        t_2 = Util.findTimeOnData(data, y_2)
+
+        print("t20 = " + str(t_1))
+        print("t60 = " + str(t_2))
+        print("t20/t60 = " + str(t_1/t_2))
+
+        print("Use these values to find zeta and tau")
+        self.zeta = input("zeta: ")
+        tau = input("tau: ")
+
+        self.w_n = 1/tau
+
+        self._estimate()

@@ -52,10 +52,15 @@ def mollenkamp(data):
     method = Mollenkamp(data)
     return method
 
+# Smith2
+def smith2(data):
+    method = Smith2(data)
+    return method
+
 # Invalid option
 def invalidOption(data):
     print("Invalid option")
-    main()
+    main(sys.argv[1:])
 
 # Switch options
 def switch2(opt, data):
@@ -64,7 +69,8 @@ def switch2(opt, data):
         2: hagglund,
         3: smith,
         4: sundaresanKrishnaswamy,
-        5: mollenkamp
+        5: mollenkamp,
+        6: smith2
     }
     chosenClass = switcher.get(opt, invalidOption)
     method = chosenClass(data)    
@@ -160,6 +166,7 @@ def main(argv):
     print("3 - Smith")
     print("4 - Sundaresan-Krishnaswamy")
     print("5 - Mollenkamp")
+    print("6 - Smith2")
     opt = input("Method: ")
     
     print("-------------------")
