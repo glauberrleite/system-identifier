@@ -3,6 +3,7 @@ System identifier
 -------------------
 Loading data
 Data loaded
+Using median fitting with 5 step size
 -------------------
 Choose an Identification Method:
 1 - Ziegler-Nichols
@@ -13,21 +14,21 @@ Choose an Identification Method:
 6 - Smith2
 Method: 6
 -------------------
-t20 = 2.2412
-t60 = 2.7631
-t20/t60 = 0.811117947233
+t20 = 4.4408920985e-16
+t60 = 0.4605
+t20/t60 = 9.64363104995e-16
 Use these values to find zeta and tau
-zeta: 0.1
-tau: 1
+zeta: 4.7
+tau: 0.04605
 -------------------
 The Transfer Function is:
-2.155319 * (1^2) * e^(-0s)
------------------------
-s^2 + 2 * 0.1 * 1 * s + 1^2
+1.973858 * e^(-2.2105s)
+(0.427914329309s + 1) * (0.00495567069096s + 1)
 -------------------
 Performance Measures
 -------------------
-MSE: 2.01073672298
-IAE: 294.994035297
-ISE: 524.802284697
-ITAE: 990.211189284
+MSE: 0.0145534330057
+IAE: 4.35222322418
+ISE: 0.756778516298
+ITAE: 15.6581550893
+

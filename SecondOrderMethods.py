@@ -88,6 +88,11 @@ class Smith2(SecondOrderMethod):
         t_1 = Util.findTimeOnData(data, y_1)
         t_2 = Util.findTimeOnData(data, y_2)
 
+        self.delay = 1.5 * Util.findTimeOnData(data, 0.283 * self.y_r) - 0.5 * Util.findTimeOnData(data, 0.632 * self.y_r)
+
+        t_1 = t_1 - self.delay
+        t_2 = t_2 - self.delay
+
         print("t20 = " + str(t_1))
         print("t60 = " + str(t_2))
         print("t20/t60 = " + str(t_1/t_2))
