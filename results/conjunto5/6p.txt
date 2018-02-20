@@ -1,0 +1,33 @@
+-------------------
+System identifier
+-------------------
+Loading data
+Data loaded
+-------------------
+Choose an Identification Method:
+1 - Ziegler-Nichols
+2 - Hagglund
+3 - Smith
+4 - Sundaresan-Krishnaswamy
+5 - Mollenkamp
+6 - Smith2
+Method: 6
+-------------------
+t20 = 1.8881
+t60 = 2.2565
+t20/t60 = 0.836738311544
+Use these values to find zeta and tau
+zeta: 0.1
+tau: 1
+-------------------
+The Transfer Function is:
+0.650275 * (1^2) * e^(-0s)
+-----------------------
+s^2 + 2 * 0.1 * 1 * s + 1^2
+-------------------
+Performance Measures
+-------------------
+MSE: 0.113453190027
+IAE: 51.761336263
+ISE: 20.9888401551
+ITAE: 188.648934904
