@@ -1,0 +1,29 @@
+-------------------
+System identifier
+-------------------
+Loading data
+Data loaded
+Using median fitting with 4 step size
+-------------------
+Choose an Identification Method:
+1 - Ziegler-Nichols
+2 - Hagglund
+3 - Smith
+4 - Sundaresan-Krishnaswamy
+5 - Mollenkamp
+Method: -------------------
+t1 = 0.253285
+t2 = 0.621695
+t3 = 0.990095
+-------------------
+The Transfer Function is:
+0.9817925 * (1.67024310011^2) * e^(--0.102224253736s)
+-----------------------
+s^2 + 2 * 0.534913977174 * 1.67024310011 * s + 1.67024310011^2
+-------------------
+Performance Measures
+-------------------
+MSE: 0.000283423056891
+IAE: 0.529893744728
+ISE: 0.010486653105
+ITAE: 2.11543054018

@@ -1,0 +1,25 @@
+-------------------
+System identifier
+-------------------
+Loading data
+Data loaded
+-------------------
+Choose an Identification Method:
+1 - Ziegler-Nichols
+2 - Hagglund
+3 - Smith
+4 - Sundaresan-Krishnaswamy
+5 - Mollenkamp
+Method: -------------------
+-------------------
+The Transfer Function is: 
+1.001548 * e^(-0.417685 * s)
+-------------------
+(0.4319691 * s + 1)
+-------------------
+Performance Measures
+-------------------
+MSE: 0.00347003676383
+IAE: 6.14677839382
+ISE: 0.520505514575
+ITAE: 13.315505746

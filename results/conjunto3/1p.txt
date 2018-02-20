@@ -1,0 +1,26 @@
+-------------------
+System identifier
+-------------------
+Loading data
+Data loaded
+-------------------
+Choose an Identification Method:
+1 - Ziegler-Nichols
+2 - Hagglund
+3 - Smith
+4 - Sundaresan-Krishnaswamy
+5 - Mollenkamp
+Method: -------------------
+Inflection detected at [0.69078, 0.42668]
+-------------------
+The Transfer Function is: 
+1.001548 * e^(-0.311458268941 * s)
+-------------------
+(0.914940517255 * s + 1)
+-------------------
+Performance Measures
+-------------------
+MSE: 0.0150568476206
+IAE: 12.422200989
+ISE: 2.25852714309
+ITAE: 25.1359049216
