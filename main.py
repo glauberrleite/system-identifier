@@ -10,6 +10,7 @@ Created on Sun Feb  4 12:51:20 2018
 
 from FirstOrderMethods import *
 from SecondOrderMethods import *
+from ClosedLoopMethods import *
 
 import numpy
 import matplotlib.pyplot as pyplot
@@ -57,6 +58,11 @@ def smith2(data):
     method = Smith2(data)
     return method
 
+# Yuwana-Seborg
+def yuwanaSeborg(data):
+    method = YuwanaSeborg(data)
+    return method
+
 # Invalid option
 def invalidOption(data):
     print("Invalid option")
@@ -70,7 +76,8 @@ def switch2(opt, data):
         3: smith,
         4: sundaresanKrishnaswamy,
         5: mollenkamp,
-        6: smith2
+        6: smith2,
+        7: yuwanaSeborg
     }
     chosenClass = switcher.get(opt, invalidOption)
     method = chosenClass(data)    
@@ -82,7 +89,7 @@ def main(argv):
     print("System identifier")
     print("-------------------")
    
-    version = 1.0
+    version = 2.0
     # Treating arguments
     dataFile = ""
     skipRows = 0
@@ -167,6 +174,7 @@ def main(argv):
     print("4 - Sundaresan-Krishnaswamy")
     print("5 - Mollenkamp")
     print("6 - Smith2")
+    print("7 - Yuwana-Seborg")
     opt = input("Method: ")
     
     print("-------------------")

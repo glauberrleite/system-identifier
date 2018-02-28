@@ -15,7 +15,32 @@ class Util:
                 break
 
         return t
-    
+
+    @staticmethod
+    def findCriticalPoints(data, n):
+        "Given a numpy array of time and its output, returns n criticals points, alternating between local max and local min"
+        result = [0 for i in range(n)]
+        setpoint = data[-1, 1]
+        counter = 0
+        for i in range(len(data) - 1):
+            # Assuming that data e oscillating, its critical points may alternate between max and min
+            if ((counter % 2) == 0):
+                if (data[i, 1] > data[i + 1, 1]) and (data[i, 1] > setpoint): 
+                    result[counter] = data[i, 1]
+
+                    counter = counter + 1
+            else:
+                if (data[i, 1] < data[i + 1, 1]) and (data[i, 1] < setpoint):
+                    result[counter] = data[i, 1]
+
+                    counter = counter + 1
+
+            if counter >= n:
+                break
+
+        return result
+
+
     @staticmethod
     def findInflectionPoint(data):
         "Given a numpy array of time and respective output, locates the inflection point and the derivative on it"
@@ -24,7 +49,7 @@ class Util:
         y0 = data[0, 1]
         y_min = data[-1,1]/3
         
-        for i in range(len(data)):
+        for i in range(len(data) - 1):
             delta = abs((data[i, 1] - data[i + 1, 1]) / (data[i, 0] - data[i + 1, 0]))
             if delta < m and data[i, 1] > y_min:
                 x0 = data[i, 0]
