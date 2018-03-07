@@ -6,9 +6,9 @@ class YuwanaSeborg:
         self.data = data
         self.estimative = numpy.zeros(len(self.data))
 
-        k_c = 1
-        k = 1
-        setpoint = 1
+        k_c = 1.0
+        k = 1.0
+        setpoint = 1.0
 
         [y_p1, y_m1, y_p2] = Util.findCriticalPoints(self.data, 3)
 
@@ -34,17 +34,16 @@ class YuwanaSeborg:
 
         print("deltaT = " + str(deltaT))
 
-        k_f = k_c * k
+        k_m = y_ss / (k_c * (setpoint - y_ss))
+        k_f = k_c * k_m
 
         # Finding process parameters
         aux1 = numpy.sqrt((1 - zeta_m**2) * (k_f + 1))
-        aux2 = zeta_p * numpy.sqrt(k_f + 1) + numpy.sqrt((zeta_m**2) * (kf_1 + 1) + k_f)
+        aux2 = zeta_m * numpy.sqrt(k_f + 1) + numpy.sqrt((zeta_m**2) * (k_f + 1) + k_f)
 
         theta_m = 2 * (deltaT / numpy.pi) * (aux1 / aux2)
 
         tau_m = (deltaT / numpy.pi) * aux1 * aux2
-
-        k_m = y_ss / (k_c * (setpoint - y_ss))
 
         # Estimating transfer function parameters
 
@@ -55,6 +54,11 @@ class YuwanaSeborg:
         self.zeta_tf = (tau_m + 0.5 * theta_m * (1 - k_f)) / numpy.sqrt(2 * theta_m * tau_m * (k_f + 1))
 
         self.theta_tf = theta_m
+
+        print("K' = " + str(self.k_tf))
+        print("theta = " + str(self.theta_tf))
+        print("tau = " + str(self.tau_tf))
+        print("zeta = " + str(self.zeta_tf))
 
     def __getOvershootDuration(self, data, y_ss):
         t1 = data[0, 0]
@@ -74,4 +78,7 @@ class YuwanaSeborg:
         return (t2 - t1)
 
     def showTransferFunction(self):
-        pass
+        print("The transfer function")
+        print("G(s) = " + str(self.k_tf) + " * (1 - 0.5 * " + str(self.theta_tf)+ " * s)")
+        print("---------------------------")
+        print(str(self.tau_tf) + "**2 * s**2 + 2 * "+ str(self.zeta_tf) +" * " + str(self.tau_tf) + " * s + 1")

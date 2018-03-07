@@ -1,0 +1,35 @@
+-------------------
+System identifier
+-------------------
+Loading data
+Data loaded
+-------------------
+Choose an Identification Method:
+1 - Ziegler-Nichols
+2 - Hagglund
+3 - Smith
+4 - Sundaresan-Krishnaswamy
+5 - Mollenkamp
+6 - Smith2
+7 - Yuwana-Seborg
+Method: -------------------
+y_p1 = 0.800701940559
+y_m1 = 0.333342542239
+y_p2 = 0.592916986767
+deltaT = 6.6904481548
+K' = 0.500227819912
+theta = 5.87891200407
+tau = 2.12933071581
+zeta = 0.361883596545
+-------------------
+The transfer function
+G(s) = 0.500227819912 * (1 - 0.5 * 5.87891200407 * s)
+---------------------------
+2.12933071581**2 * s**2 + 2 * 0.361883596545 * 2.12933071581 * s + 1
+-------------------
+Performance Measures
+-------------------
+MSE: 0.242308931639
+IAE: 72.799093387
+ISE: 38.5271201306
+ITAE: 2145.26496089
