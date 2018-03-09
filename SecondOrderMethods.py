@@ -41,8 +41,6 @@ class SecondOrderMethod:
             print(str(self.k) + " * e^(-"+ str(self.delay) + "s)")
             print("(" + str(self.tau1) + "s + 1) * (" + str(self.tau2) + "s + 1)")
 
-    def plot(self):
-        pass
 
 class Mollenkamp(SecondOrderMethod):
     def __init__(self, data):        

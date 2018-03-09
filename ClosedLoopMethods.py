@@ -7,7 +7,6 @@ class YuwanaSeborg:
         self.estimative = numpy.zeros(len(self.data))
 
         k_c = 1.0
-        k = 1.0
         setpoint = 1.0
 
         [y_p1, y_m1, y_p2] = Util.findCriticalPoints(self.data, 3)
@@ -27,7 +26,7 @@ class YuwanaSeborg:
         zeta_1 = -aux1 / numpy.sqrt(numpy.pi**2 + aux1**2)
         zeta_2 = -aux2 / numpy.sqrt(4 * (numpy.pi**2) + aux2**2)
 
-        zeta_m = (zeta_1*zeta_2)/2
+        zeta_m = (zeta_1 + zeta_2)/2
 
         # Determining overshootDuration
         deltaT = self.__getOvershootDuration(data, y_ss)
@@ -47,18 +46,30 @@ class YuwanaSeborg:
 
         # Estimating transfer function parameters
 
-        self.k_tf = k_f / (k_f + 1)
+        self.k = k_f / (k_f + 1)
 
-        self.tau_tf = numpy.sqrt((theta_m * tau_m) / (2 * (k_f + 1)))
+        self.tau = numpy.sqrt((theta_m * tau_m) / (2 * (k_f + 1)))
 
-        self.zeta_tf = (tau_m + 0.5 * theta_m * (1 - k_f)) / numpy.sqrt(2 * theta_m * tau_m * (k_f + 1))
+        self.zeta = (tau_m + 0.5 * theta_m * (1 - k_f)) / numpy.sqrt(2 * theta_m * tau_m * (k_f + 1))
 
-        self.theta_tf = theta_m
+        self.theta = theta_m
 
-        print("K' = " + str(self.k_tf))
-        print("theta = " + str(self.theta_tf))
-        print("tau = " + str(self.tau_tf))
-        print("zeta = " + str(self.zeta_tf))
+        self.__estimate()
+
+    def __estimate(self):
+        if self.zeta < 1:
+            beta = numpy.sqrt(1 - self.zeta ** 2 )
+            phi = numpy.arccos(self.zeta)
+            gama = self.theta / (2 * self.tau)
+
+            for i in range(len(self.data)):
+                t = self.data[i, 0]
+                alpha = (beta * t / self.tau) + phi
+
+                self.estimative[i] = self.k * (1 \
+                    + numpy.exp(-self.zeta * t / self.tau) \
+                    * (gama * numpy.cos(alpha) \
+                    - (1 + self.zeta * gama) * numpy.sin(alpha) / beta))
 
     def __getOvershootDuration(self, data, y_ss):
         t1 = data[0, 0]
@@ -79,6 +90,6 @@ class YuwanaSeborg:
 
     def showTransferFunction(self):
         print("The transfer function")
-        print("G(s) = " + str(self.k_tf) + " * (1 - 0.5 * " + str(self.theta_tf)+ " * s)")
+        print("G(s) = " + str(self.k) + " * (1 - 0.5 * " + str(self.theta)+ " * s)")
         print("---------------------------")
-        print(str(self.tau_tf) + "**2 * s**2 + 2 * "+ str(self.zeta_tf) +" * " + str(self.tau_tf) + " * s + 1")
+        print(str(self.tau) + "**2 * s**2 + 2 * "+ str(self.zeta) +" * " + str(self.tau) + " * s + 1")
