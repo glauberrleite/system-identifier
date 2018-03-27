@@ -44,6 +44,9 @@ class YuwanaSeborg:
 
         tau_m = (deltaT / numpy.pi) * aux1 * aux2
 
+        print("k_m = " + str(k_m))
+        print("tau_m = " + str(tau_m))
+
         # Estimating transfer function parameters
 
         self.k = k_f / (k_f + 1)
