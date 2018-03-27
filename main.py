@@ -11,6 +11,7 @@ Created on Sun Feb  4 12:51:20 2018
 from FirstOrderMethods import *
 from SecondOrderMethods import *
 from ClosedLoopMethods import *
+from LeastSquares import *
 
 import numpy
 import matplotlib.pyplot as pyplot
@@ -63,6 +64,20 @@ def yuwanaSeborg(data):
     method = YuwanaSeborg(data)
     return method
 
+# Least Squares
+def leastSquares(data):
+    # Assuming step input
+    inputArray = numpy.ones(len(data))
+
+    # Defining parameters
+    orderOutput = input("Select output order: ")
+    orderInput = input("Select input order: ")
+
+    # Making an instance of LeastSquares
+    method = LeastSquares(data, inputArray, orderOutput, orderInput)
+
+    return method
+
 # Invalid option
 def invalidOption(data):
     print("Invalid option")
@@ -77,7 +92,8 @@ def switch2(opt, data):
         4: sundaresanKrishnaswamy,
         5: mollenkamp,
         6: smith2,
-        7: yuwanaSeborg
+        7: yuwanaSeborg,
+        8: leastSquares
     }
     chosenClass = switcher.get(opt, invalidOption)
     method = chosenClass(data)    
@@ -175,6 +191,7 @@ def main(argv):
     print("5 - Mollenkamp")
     print("6 - Smith2")
     print("7 - Yuwana-Seborg")
+    print("8 - Least Squares")
     opt = input("Method: ")
     
     print("-------------------")
