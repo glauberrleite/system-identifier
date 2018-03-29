@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # -*- coding: utf-8 -*-
 """
@@ -70,8 +70,8 @@ def leastSquares(data):
     inputArray = numpy.ones(len(data))
 
     # Defining parameters
-    orderOutput = input("Select output order: ")
-    orderInput = input("Select input order: ")
+    orderOutput = int(input("Select output order: "))
+    orderInput = int(input("Select input order: "))
 
     # Making an instance of LeastSquares
     method = LeastSquares(data, inputArray, orderOutput, orderInput)
@@ -84,7 +84,7 @@ def invalidOption(data):
     main(sys.argv[1:])
 
 # Switch options
-def switch2(opt, data):
+def switch(opt, data):
     switcher = {
         1: zieglerNichols,
         2: hagglund,
@@ -95,11 +95,11 @@ def switch2(opt, data):
         7: yuwanaSeborg,
         8: leastSquares
     }
+
     chosenClass = switcher.get(opt, invalidOption)
     method = chosenClass(data)    
     return method
-    
-
+                                
 def main(argv):
     print("-------------------")
     print("System identifier")
@@ -192,12 +192,11 @@ def main(argv):
     print("6 - Smith2")
     print("7 - Yuwana-Seborg")
     print("8 - Least Squares")
-    opt = input("Method: ")
+    opt = int(input("Method: "))
     
     print("-------------------")
-    method = None
-    method = switch2(opt, data)
-    
+    method = switch(int(opt), data)
+
     print("-------------------")
     method.showTransferFunction()
 

@@ -5,16 +5,25 @@ class LeastSquares:
         self.data = data
         self.inputArray = inputArray
         self.estimative = numpy.zeros(len(data))
-        
-        phi = self.__buildRegressionMatrix(orderOutput, orderInput)
+        self.error = numpy.zeros(len(data))
 
-        print(phi)
+        self.phi = self.__buildRegressionMatrix(orderOutput, orderInput)
+
+        self.theta = numpy.linalg.pinv(self.phi) @ data[:, 1]
+
+        self._estimate()
+
+        self.error = self.data[:, 1] - self.estimative
     
     def _estimate(self):
-        pass
+        self.estimative = self.phi @ self.theta
 
     def showTransferFunction(self):
-        pass
+        print("Theta:")
+        print(self.theta)
+
+        print("Error:")
+        print(self.error)
 
     def __buildRegressionMatrix(self, orderOutput, orderInput):
         regressionMatrix = numpy.zeros((len(self.data), orderOutput + orderInput))
