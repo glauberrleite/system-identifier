@@ -18,12 +18,13 @@ class LeastSquares:
     def _estimate(self):
         self.estimative = self.phi @ self.theta
 
-    def showTransferFunction(self):
+    def showResults(self):
         print("Theta:")
         print(self.theta)
 
         print("Error:")
-        print(self.error)
+        print(numpy.mean(self.error))
+
 
     def __buildRegressionMatrix(self, orderOutput, orderInput):
         regressionMatrix = numpy.zeros((len(self.data), orderOutput + orderInput))

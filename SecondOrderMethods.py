@@ -31,7 +31,7 @@ class SecondOrderMethod:
                         + ( ( (self.tau1)*(self.tau2**2) ) / (self.tau1 - self.tau2) ) * numpy.exp(-(self.data[i, 0] - self.delay)/self.tau2))
 
 
-    def showTransferFunction(self):
+    def showResults(self):
         print("The Transfer Function is:")
         if self.zeta < 1:
             print(str(self.k) + " * (" + str(self.w_n) + "^2) * e^(-"+ str(self.delay)  +"s)")

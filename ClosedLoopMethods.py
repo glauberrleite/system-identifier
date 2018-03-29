@@ -91,7 +91,7 @@ class YuwanaSeborg:
 
         return (t2 - t1)
 
-    def showTransferFunction(self):
+    def showResults(self):
         print("The transfer function")
         print("G(s) = " + str(self.k) + " * (1 - 0.5 * " + str(self.theta)+ " * s)")
         print("---------------------------")

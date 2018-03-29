@@ -198,7 +198,7 @@ def main(argv):
     method = switch(int(opt), data)
 
     print("-------------------")
-    method.showTransferFunction()
+    method.showResults()
 
     # Calculating and printing performance measures
     mse = Util.mse(data, method.estimative)

@@ -24,7 +24,7 @@ class FirstOrderMethod:
                 self.estimative[i] = (1 - numpy.exp(-(self.data[i, 0] - self.delay)/self.tau)) * self.K_p
 
 
-    def showTransferFunction(self):
+    def showResults(self):
         print("The Transfer Function is: ")
         print(str(self.K_p) + " * e^(-" + str(self.delay) + " * s)")
         print("-------------------")
