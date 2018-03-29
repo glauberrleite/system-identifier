@@ -1,3 +1,5 @@
+import numpy
+
 class Util:
     @staticmethod
     def findTimeOnData(data, y):
@@ -109,3 +111,21 @@ class Util:
             result = result + data[i, 0] * abs(estimative[i] - data[i, 1]) 
 
         return result
+
+    @staticmethod
+    def computeOutput(inputArray, theta, orderOutput, orderInput):
+        y = numpy.zeros(len(inputArray))
+        inputArray[0:orderInput] = 0
+
+        if (orderOutput + orderInput != len(theta)):
+            print("Invalid order values")
+            
+        for i in range(orderOutput, len(inputArray)):
+            for j in range(1, orderOutput + 1):
+                y[i] = y[i] + theta[j - 1] * y[i - j]
+
+            for j in range(1, orderInput + 1):
+                if (i >= j):
+                    y[i] = y[i] + theta[j - 1 + orderOutput] * inputArray[i - j]
+
+        return y
