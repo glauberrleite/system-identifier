@@ -115,7 +115,7 @@ class Util:
     @staticmethod
     def computeOutput(inputArray, theta, orderOutput, orderInput):
         y = numpy.zeros(len(inputArray))
-        inputArray[0:orderInput] = 0
+        #inputArray[0:orderInput] = 0
 
         if (orderOutput + orderInput != len(theta)):
             print("Invalid order values")

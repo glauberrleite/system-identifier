@@ -9,6 +9,8 @@ class LeastSquares:
 
         self.phi = self.__buildRegressionMatrix(orderOutput, orderInput)
 
+        print(self.phi)
+
         self.theta = numpy.linalg.pinv(self.phi) @ data[:, 1]
 
         self._estimate()
