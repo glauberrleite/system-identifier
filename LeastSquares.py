@@ -11,14 +11,14 @@ class LeastSquares:
 
         print(self.phi)
 
-        self.theta = numpy.linalg.pinv(self.phi) @ data[:, 1]
+        self.theta = numpy.dot(numpy.linalg.pinv(self.phi), data[:, 1])
 
         self._estimate()
 
         self.error = self.data[:, 1] - self.estimative
     
     def _estimate(self):
-        self.estimative = self.phi @ self.theta
+        self.estimative = numpy.dot(self.phi , self.theta)
 
     def showResults(self):
         print("Theta:")
