@@ -72,6 +72,7 @@ def leastSquares(data):
     # Defining parameters
     orderOutput = int(input("Select output order: "))
     orderInput = int(input("Select input order: "))
+    orderError = int(input("Select error order: "))
 
     # Making an instance of LeastSquares
     method = LeastSquares(data, inputArray, orderOutput, orderInput)
