@@ -1,6 +1,6 @@
 %%
-order_input = 2;
-order_output = 2;
+order_input = 5;
+order_output = 5;
 n = order_input + order_output;
 
 fileID = fopen('stepG2.txt', 'r');
@@ -8,24 +8,6 @@ formatSpec = '%f %f';
 sizeData = [2 Inf];
 data = fscanf(fileID, formatSpec, sizeData);
 data = data';
-
-data = [
-    1.0, 0.9; 
-    0.8, 2.5;
-    0.6, 2.4;
-    0.4, 1.3;
-    0.2, 1.2;
-    0.0, 0.8;
-    0.2, 0.0;
-    0.4, 0.9;
-    0.6, 1.4;
-    0.8, 1.9;
-    1.0, 2.3;
-    0.8, 2.4;
-    0.6, 2.3;
-    0.4, 1.3;
-    0.2, 1.2
-    ];
 
 m = length(data);
 input = ones(m);
@@ -49,11 +31,58 @@ for row = 1:m
     end
 end
 
+
+Y = data(:,2);
 phi_pinv = pinv(phi);
-theta = phi_pinv * data(:,2);
-estimative = phi * theta;
-error = data(:,2) - estimative;
+
+% theta
+theta = phi_pinv * Y;
+
+% Y estimado ou Y^
+Y_e = phi * theta;
+
+% eps = Y - Y^
+error = Y - Y_e;
+
 disp('Theta:')
 theta
 disp('Error:')
-mean(error)
+error_mean = mean(error);
+error_mean
+plot(Y, 'b')
+hold on
+plot(Y_e, 'r')
+legend('Y', 'Y estimado')
+
+%% order 1
+theta1 = theta;
+error_mean1 = error_mean;
+
+%% order 2
+theta2 = theta;
+error_mean2 = error_mean;
+
+%% order 3
+theta3 = theta;
+error_mean3 = error_mean;
+
+%% order 4
+theta4 = theta;
+error_mean4 = error_mean;
+
+%% order 5
+theta5 = theta;
+error_mean5 = error_mean;
+
+%% Save in .mat file
+Estimative.theta1 = theta1;
+Estimative.theta2 = theta2;
+Estimative.theta3 = theta3;
+Estimative.theta4 = theta4;
+Estimative.theta5 = theta5;
+Estimative.error1 = error_mean1;
+Estimative.error2 = error_mean2;
+Estimative.error3 = error_mean3;
+Estimative.error4 = error_mean4;
+Estimative.error5 = error_mean5;
+save('part2-2.mat', '-struct', 'Estimative');
