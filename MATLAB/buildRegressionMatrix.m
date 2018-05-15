@@ -2,9 +2,9 @@ function phi = buildRegressionMatrix(order, dataOutput, dataInput, dataError)
     m = length(dataOutput);
 
     n = 2 * order;
-    %if (varargin == 4)
+    if (nargin == 4)
         n = n + order;
-    %end
+    end
     
     phi = zeros(m, n);
 
@@ -14,16 +14,16 @@ function phi = buildRegressionMatrix(order, dataOutput, dataInput, dataError)
                phi(row, col) = 0;
                phi(row, col + order) = 0;
                
-               %if (varargin == 4)
+               if (nargin == 4)
                    phi(row, col + 2*order) = 0;
-               %end
+               end
            else
                phi(row, col) = dataOutput(row-col);
                phi(row, col + order) = dataInput(row-col);
                
-               %if (varargin == 4)
+               if (nargin == 4)
                     phi(row, col + 2*order) = dataError(row-col);
-               %end
+               end
            end
         end
     end
