@@ -1,7 +1,8 @@
 function [theta, estimative] = ...
     LS(order, dataOutput, dataInput, dataError)
 
-    if (nargin == 4)
+    if (nargin >= 4)
+        
         phi = buildRegressionMatrix(order, dataOutput, dataInput, dataError);
     else
         phi = buildRegressionMatrix(order, dataOutput, dataInput);
