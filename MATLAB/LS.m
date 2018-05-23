@@ -1,13 +1,18 @@
 function [theta, estimative] = ...
     LS(order, dataOutput, dataInput, dataError)
 
-    if (nargin >= 4)
-        
+    if (nargin == 4)
+        extended = true;
+    else
+        extended = false;
+    end
+
+    if (extended)
         phi = buildRegressionMatrix(order, dataOutput, dataInput, dataError);
     else
         phi = buildRegressionMatrix(order, dataOutput, dataInput);
     end
-
+    
     Y = dataOutput;
     phi_pinv = pinv(phi);
 
